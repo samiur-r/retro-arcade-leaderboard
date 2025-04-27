@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pong Game</title>
+    <style>
+      body {
+        background: #111;
+        color: #eee;
+        font-family: monospace;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 0;
+        padding: 20px;
+      }
+
+      canvas {
+        border: 2px solid #eee;
+        margin-top: 20px;
+        background: #000;
+      }
+
+      #score {
+        margin-top: 20px;
+        font-size: 20px;
+      }
+
+      #restartButton {
+        display: none;
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 18px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      #restartButton:hover {
+        background: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🏓 Pong Game</h1>
+    <div id="score">Score: 0</div>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <button id="restartButton" onclick="startGame()">Restart Game</button>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      const restartButton = document.getElementById("restartButton");
+      const scoreDisplay = document.getElementById("score");
+
+      const paddleHeight = 80;
+      const paddleWidth = 10;
+      const ballSize = 10;
+      let playerY, aiY, ballX, ballY, ballSpeedX, ballSpeedY;
+      let score;
+      let gameInterval;
+      let upPressed = false;
+      let downPressed = false;
+      const gameSpeed = 16; // ~60fps
+      const paddleSpeed = 6;
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowUp") {
+          upPressed = true;
+        }
+        if (e.key === "ArrowDown") {
+          downPressed = true;
+        }
+      });
+
+      document.addEventListener("keyup", (e) => {
+        if (e.key === "ArrowUp") {
+          upPressed = false;
+        }
+        if (e.key === "ArrowDown") {
+          downPressed = false;
+        }
+      });
+
+      function drawPaddle(x, y) {
+        ctx.fillStyle = "white";
+        ctx.fillRect(x, y, paddleWidth, paddleHeight);
+      }
+
+      function drawBall() {
+        ctx.fillStyle = "red";
+        ctx.fillRect(ballX, ballY, ballSize, ballSize);
+      }
+
+      function moveEverything() {
+        ballX += ballSpeedX;
+        ballY += ballSpeedY;
+
+        // Player paddle movement
+        if (upPressed && playerY > 0) {
+          playerY -= paddleSpeed;
+        }
+        if (downPressed && playerY < canvas.height - paddleHeight) {
+          playerY += paddleSpeed;
+        }
+
+        // Top and bottom wall collision
+        if (ballY <= 0 || ballY >= canvas.height - ballSize) {
+          ballSpeedY = -ballSpeedY;
+        }
+
+        // Left wall collision (player missed)
+        if (ballX <= 0) {
+          endGame();
+        }
+
+        // Right wall collision (AI missed)
+        if (ballX >= canvas.width - ballSize) {
+          score++;
+          scoreDisplay.innerText = `Score: ${score}`;
+          resetBall();
+        }
+
+        // Player paddle collision
+        if (ballX <= paddleWidth) {
+          if (ballY > playerY && ballY < playerY + paddleHeight) {
+            ballSpeedX = -ballSpeedX;
+            const deltaY = ballY - (playerY + paddleHeight / 2);
+            ballSpeedY = deltaY * 0.35;
+          }
+        }
+
+        // AI paddle collision
+        if (ballX >= canvas.width - paddleWidth * 2) {
+          if (ballY > aiY && ballY < aiY + paddleHeight) {
+            ballSpeedX = -ballSpeedX;
+          }
+        }
+
+        moveAI();
+      }
+
+      function moveAI() {
+        const aiCenter = aiY + paddleHeight / 2;
+        if (aiCenter < ballY - 35) {
+          aiY += 4;
+        } else if (aiCenter > ballY + 35) {
+          aiY -= 4;
+        }
+      }
+
+      function drawEverything() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        drawPaddle(0, playerY); // Player left
+        drawPaddle(canvas.width - paddleWidth, aiY); // AI right
+        drawBall();
+      }
+
+      function gameLoop() {
+        moveEverything();
+        drawEverything();
+      }
+
+      function startGame() {
+        clearInterval(gameInterval);
+        restartButton.style.display = "none";
+
+        playerY = canvas.height / 2 - paddleHeight / 2;
+        aiY = canvas.height / 2 - paddleHeight / 2;
+        ballX = canvas.width / 2;
+        ballY = canvas.height / 2;
+
+        // Start ball moving RIGHT initially
+        ballSpeedX = 5;
+        ballSpeedY = (Math.random() > 0.5 ? 1 : -1) * 3;
+
+        score = 0;
+        scoreDisplay.innerText = `Score: ${score}`;
+
+        gameLoop(); // Draw first frame
+        gameInterval = setInterval(gameLoop, gameSpeed);
+      }
+
+      function resetBall() {
+        ballX = canvas.width / 2;
+        ballY = canvas.height / 2;
+        ballSpeedX = (Math.random() > 0.5 ? 1 : -1) * 5;
+        ballSpeedY = (Math.random() > 0.5 ? 1 : -1) * 3;
+      }
+
+      function endGame() {
+        clearInterval(gameInterval);
+        ctx.fillStyle = "white";
+        ctx.font = "24px monospace";
+        ctx.fillText("Game Over!", canvas.width / 2 - 70, canvas.height / 2);
+
+        restartButton.style.display = "block";
+        submitScore(score);
+      }
+
+      async function submitScore(finalScore) {
+        try {
+          const gameSlug = "pong"; // Hardcoded for this game
+
+          const response = await fetch(
+            `${window.location.origin}/api/submit-score`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ gameSlug, score: finalScore }),
+            }
+          );
+
+          if (response.ok) {
+            console.log("Score submitted successfully!");
+          } else {
+            console.error("Failed to submit score.");
+          }
+        } catch (error) {
+          console.error("Error submitting score:", error);
+        }
+      }
+
+      window.addEventListener("load", () => {
+        window.focus();
+        startGame();
+      });
+
+      startGame();
+    </script>
+  </body>
+</html>

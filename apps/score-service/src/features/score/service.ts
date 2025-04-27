@@ -1,5 +1,5 @@
 import * as scoreRepository from './repository';
-import {publishScoreSubmittedEvent} from '@/libs/messaging/publisher';
+import { publishScoreSubmittedEvent } from "@repo/messaging";
 
 export const submitScore = async (gameId: string, score: number) => {
   const newScore = await scoreRepository.createScore({gameId, score});
