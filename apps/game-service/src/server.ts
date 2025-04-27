@@ -4,14 +4,13 @@ import {connectDatabase} from '@/libs/db';
 import logger from '@repo/logger';
 
 const startServer = async () => {
-  console.log(config.baseUrl);
   try {
     await connectDatabase();
     logger.info('Connected to the database');
 
-    app.listen(config.baseUrl, () => {
+    app.listen(config.port, () => {
       logger.info(
-        `🚀 Listening on ${config.baseUrl} with NODE_ENV=${config.nodeEnv} 🚀`,
+        `🚀 Listening on ${config.port} with NODE_ENV=${config.nodeEnv} 🚀`,
       );
     });
   } catch (error) {
