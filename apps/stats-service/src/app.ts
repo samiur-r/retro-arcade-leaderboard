@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 
 import {httpLogger} from '@/middlewares/httpLogger';
 import corsOptions from '@/config/corsOptions';
+import statRoute from '@/features/stat/route';
 
 const app: Express = express();
 
@@ -23,8 +24,6 @@ app.use(limiter);
 app.use(express.json());
 app.use(httpLogger);
 
-app.get('/', (_req, res) => {
-  res.send('API is running...');
-});
+app.use('/api/stat', statRoute);
 
 export default app;

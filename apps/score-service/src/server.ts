@@ -2,10 +2,12 @@ import config from '@/config';
 import app from '@/app';
 import {connectDatabase} from '@/libs/db';
 import logger from '@repo/logger';
+import { connectBroker } from "@repo/messaging";
 
 const startServer = async () => {
   try {
     await connectDatabase();
+    await connectBroker(config.rabbitMQUrl);
     logger.info('Connected to the database');
 
     app.listen(config.port, () => {

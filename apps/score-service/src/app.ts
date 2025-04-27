@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 
 import {httpLogger} from '@/middlewares/httpLogger';
 import corsOptions from '@/config/corsOptions';
+import scoreRoute from '@/features/score/route';
 
 const app: Express = express();
 
@@ -23,8 +24,6 @@ app.use(limiter);
 app.use(express.json());
 app.use(httpLogger);
 
-app.get('/', (_req, res) => {
-  res.send('API is running...');
-});
+app.use('/api/score', scoreRoute);
 
 export default app;

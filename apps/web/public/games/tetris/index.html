@@ -63,7 +63,7 @@
       let currentPiece;
       let gameInterval;
       let score = 0;
-      const gameSpeed = 500; // ms
+      const gameSpeed = 500;
 
       const shapes = [
         [
@@ -225,7 +225,6 @@
         clearInterval(gameInterval);
         restartButton.style.display = "none";
 
-        // Create empty grid
         for (let y = 0; y < rows; y++) {
           grid[y] = new Array(cols).fill(0);
         }
@@ -249,7 +248,7 @@
 
       async function submitScore(finalScore) {
         try {
-          const gameSlug = "tetris"; // Hardcoded for Tetris
+          const gameSlug = "tetris";
 
           const response = await fetch(
             `${window.location.origin}/api/submit-score`,

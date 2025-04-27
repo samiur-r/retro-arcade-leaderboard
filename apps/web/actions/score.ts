@@ -35,7 +35,7 @@ export const submitScore = async (
   gameId: string,
   score: number
 ): Promise<Score> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL_SCORES}/score`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL_SCORE}/api/score`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
