@@ -1,0 +1,13 @@
+{
+  "name": "@repo/playwright-config",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./node": "./node.js",
+    "./base": "./base.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0"
+  }
+}
