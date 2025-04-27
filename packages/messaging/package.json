@@ -1,0 +1,19 @@
+{
+  "name": "@repo/messaging",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.3"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/amqplib": "^0.10.7",
+    "eslint": "^9.25.0",
+    "typescript": "5.8.2"
+  }
+}
