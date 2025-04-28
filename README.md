@@ -1,135 +1,164 @@
-# Turborepo Clean Microservices
 
-A high-performance **Turborepo** monorepo containing multiple applications and packages for the Micro Services ecosystem.
+# 🎮 Retro Arcade Leaderboard Microservices
 
-Built with love using:
+Welcome to **Retro Arcade Leaderboard** — a fullstack microservices project built to showcase scalable architecture, clean coding, and modern DevOps practices.
 
-- 🏎️ **Turborepo** — lightning-fast monorepo management
-- 🖥️ **Next.js**, **Remix**, **Vite**, **Express** — multiple frontend and backend apps
-- 🛠️ **Vitest** and **Playwright** — modern testing setup
-- 🎨 **Custom ESLint and Prettier configs** — shared across apps
-- ⚡ **Husky** and **lint-staged** — fast and safe git commits
+> Play classic games like Snake, Pong, Tetris — automatically track scores, stats, and leaderboards!
 
 ---
 
-## 📁 Project Structure
+## 🚀 Tech Stack
 
-```plaintext
-apps/
-  api/          → Express backend server
-  web/          → Next.js web application
+- **Frontend**: Next.js 15 (App Router), TailwindCSS
+- **Backend APIs**:
+  - Express.js (TypeScript)
+  - Prisma ORM + PostgreSQL (per service database)
+- **Messaging**: RabbitMQ (via `@repo/messaging` library)
+- **Monorepo**: TurboRepo + PNPM Workspaces
+- **Dev Tools**: ts-node-dev, Turbo CLI, Docker (RabbitMQ)
+- **Architecture**: Domain-Driven Clean Architecture (DDD)
 
-packages/
-  @repo/eslint-config/         → Shared ESLint config
-  @repo/logger/                → Shared isomorphic logger
-  @repo/playwright-config/     → Shared Playwright config
-  @repo/schemas/               → Shared Zod schemas (types)
-  @repo/typescript-config/     → Shared TypeScript configs
-  @repo/ui/                    → Shared React UI components
-  @repo/vitest-config/         → Shared Vitest config
-  @repo/prettier-config/             → Shared Prettier config
+---
+
+## 🏛 Microservices Overview
+
+| Service | Description |
+|---------|-------------|
+| **Game Service** | Manage games (Snake, Pong, Tetris) metadata |
+| **Score Service** | Save and publish submitted game scores |
+| **Stats Service** | Track total plays, best scores, and generate arcade stats |
+| **Web App** | Frontend for users to play games and view leaderboards |
+
+✅ Each service has its **own Prisma Client**  
+✅ Communicates via **RabbitMQ events**  
+✅ Fully **isolated**, **scalable**, and **future-ready**
+
+---
+
+## ⚙️ Project Structure
+
+```
+/apps
+  /game-service
+  /score-service
+  /stats-service
+  /web (Next.js frontend)
+
+/packages
+  /messaging (RabbitMQ wrapper)
+  /logger (Winston logger)
+  and more...  
+
+turbo.json (TurboRepo config)
+pnpm-workspace.yaml (PNPM monorepo config)
+docker-compose.yml (RabbitMQ service)
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
-First, install all dependencies:
+### 1. Install Dependencies
 
 ```bash
 pnpm install
 ```
 
-Then, run development servers:
+---
+
+### 2. Setup RabbitMQ
+
+Run RabbitMQ via Docker:
 
 ```bash
-pnpm dev
+docker compose up -d
 ```
 
-Build all apps and packages:
+- RabbitMQ Management UI: http://localhost:15672  
+  (Username: `guest`, Password: `guest`)
+
+---
+
+### 3. Generate Prisma Clients
 
 ```bash
-pnpm build
+pnpm turbo run prisma:generate
 ```
 
-Run lint across all apps/packages:
+✅ Generates Prisma Client inside each microservice locally.
+
+---
+
+### 4. Start Development Mode
 
 ```bash
-pnpm lint
+pnpm turbo run dev
 ```
 
-Run tests:
+- Game Service: http://localhost:5001
+- Score Service: http://localhost:5002
+- Stats Service: http://localhost:5003
+- Web App: http://localhost:3000
 
-```bash
-pnpm test
+---
+
+### 5. Play the Games 🎮
+
+- Visit the Web App
+- Play Snake, Pong, Tetris
+- Submit scores
+- View Leaderboards and Stats!
+
+---
+
+## 📦 Environment Variables
+
+Each service expects a `.env` file with:
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+RABBITMQ_URL=amqp://localhost
+NEXT_PUBLIC_API_URL_GAME=http://localhost:5001
+NEXT_PUBLIC_API_URL_SCORE=http://localhost:5002
+NEXT_PUBLIC_API_URL_STATS=http://localhost:5003
 ```
 
----
-
-## 🧹 Git Hooks
-
-We use **Husky** and **lint-staged** to automatically format and lint changed files before commits.
-
-If you install dependencies, make sure to re-install husky hooks:
-
-```bash
-pnpm prepare
-```
+✅ Adjust ports if you change service ports.
 
 ---
 
-## 🧪 Testing
+## 📈 Features
 
-- **Vitest** is used for unit testing across all apps and packages.
-- **Playwright** is used for end-to-end (E2E) testing for frontend and backend apps.
-
-Each app/package can define its own `vitest.config.ts` and `playwright.config.ts` based on shared configurations.
-
----
-
-## 🛠 Monorepo Tooling
-
-This monorepo uses [Turborepo](https://turbo.build/repo) to manage tasks efficiently across all apps and packages.
-
-### Available scripts
-
-| Script        | Description                           |
-| :------------ | :------------------------------------ |
-| `pnpm dev`    | Start all dev servers                 |
-| `pnpm build`  | Build all apps and packages           |
-| `pnpm lint`   | Lint all apps and packages            |
-| `pnpm test`   | Run all tests (vitest and playwright) |
-| `pnpm format` | Format all files using Prettier       |
+- 🛠️ True microservice architecture
+- 📬 Event-driven communication via RabbitMQ
+- 💾 Per-service PostgreSQL and Prisma Clients
+- 🌐 Beautiful Web UI (Next.js + Tailwind)
+- 📊 Dynamic leaderboards and arcade stats
+- 🚀 TurboRepo-powered monorepo setup
+- 🐳 Dockerized RabbitMQ for easy dev
 
 ---
 
-## ✨ Tech Stack Summary
+## 🔥 Development Scripts
 
-- **Frontend:** Next.js, TailwindCss
-- **Backend:** Express (Node.js)
-- **ORM:** Prisma
-- **Testing:** Vitest, Playwright
-- **Linting:** ESLint (Flat Config), Prettier
-- **Type Checking:** TypeScript
-- **Monorepo Management:** Turborepo
-- **Commit Hooks:** Husky, lint-staged
+| Command | Description |
+|---------|-------------|
+| `pnpm turbo run dev` | Start all services in dev mode |
+| `pnpm turbo run build` | Build all services |
+| `pnpm turbo run prisma:generate` | Generate Prisma Clients for all services |
+| `docker compose up` | Start RabbitMQ server |
 
 ---
 
-## 🤝 Contributing
+## 📢 Future Enhancements
 
-We welcome contributions!
-
-1. Fork the repo
-2. Create your feature branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m 'feat: add your feature'`
-4. Push to the branch: `git push origin feature/your-feature`
-5. Create a Pull Request 🚀
+- Add more games
+- Add "Top 10 scores" table per game
+- Add "Achievements" (badges) based on player performance
+- Add WebSocket for real-time updates
 
 ---
 
-## 📄 License
+## 📜 License
 
-This project is licensed under the MIT License.
-
----
+MIT License
