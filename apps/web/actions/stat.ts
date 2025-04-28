@@ -27,7 +27,7 @@ export const getAllStats = async (): Promise<GameStats[]> => {
 
 export const getStatsByGameId = async (gameId: string): Promise<GameStats> => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL_STATS}/stat/${gameId}`,
+    `${process.env.NEXT_PUBLIC_API_URL_STAT}/api/stat/${gameId}`,
     {
       cache: "no-store",
     }
