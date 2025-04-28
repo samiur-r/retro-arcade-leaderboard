@@ -1,4 +1,5 @@
 import * as statsRepository from './repository';
+import { getChannel } from "@repo/messaging";
 
 export const getAllStats = async () => {
   return statsRepository.getAllStats();
@@ -30,4 +31,30 @@ export const recordScoreFromEvent = async (
     totalPlays: updatedTotalPlays,
     bestScore: updatedBestScore,
   });
+};
+
+export const handleScoreSubmitted = async (payload: { gameId: string; score: number }) => {
+  const { gameId, score } = payload;
+  return recordScoreFromEvent(gameId, score);
+};
+
+export const subscribeToScoreSubmitted = async () => {
+  const channel = getChannel();
+  const queue = "score.submitted";
+
+  await channel.assertQueue(queue, { durable: true });
+
+  channel.consume(queue, async (message) => {
+    if (message) {
+      const payload = JSON.parse(message.content.toString());
+
+      console.log("[Stats Service] Received ScoreSubmitted Event:", payload);
+
+      await handleScoreSubmitted(payload);
+
+      channel.ack(message);
+    }
+  });
+
+  console.log(`[Messaging] Subscribed to queue: ${queue}`);
 };

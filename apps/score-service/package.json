@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "db:generate": "prisma generate",
+    "db:generate": "pnpm prisma generate --schema prisma/schema.prisma",
     "db:push": "prisma db push",
     "test": "vitest run",
     "test:dev": "vitest watch",
@@ -28,11 +28,11 @@
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
-    "prisma": "^6.6.0",
     "winston": "^3.17.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "prisma": "^6.6.0",
     "@playwright/test": "^1.52.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/playwright-config": "workspace:*",

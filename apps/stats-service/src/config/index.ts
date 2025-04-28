@@ -6,6 +6,7 @@ const config = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
   port: process.env.PORT || 5003,
   baseUrl: process.env.BASE_URL ?? 'http://localhost:5003',
+  rabbitMQUrl: process.env.RABBITMQ_URL ?? 'amqp://localhost',
   clientOrigin: process.env.CLIENT_ORIGIN ?? 'http://localhost:3000',
   jwtSecret: process.env.JWT_SECRET ?? 'your_jwt_secret',
   cookieSecret: process.env.COOKIE_SECRET ?? 'your_cookie_secret',
