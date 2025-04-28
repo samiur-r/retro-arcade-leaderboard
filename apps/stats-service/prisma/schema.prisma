@@ -10,7 +10,7 @@ datasource db {
 
 model GameStats {
   id         String   @id @default(uuid())
-  gameId     String
+  gameId     String   @unique
   totalPlays Int      @default(0)
   bestScore  Int      @default(0)
   createdAt  DateTime @default(now())

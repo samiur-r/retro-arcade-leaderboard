@@ -35,6 +35,7 @@ export const recordScoreFromEvent = async (
 
 export const handleScoreSubmitted = async (payload: { gameId: string; score: number }) => {
   const { gameId, score } = payload;
+
   return recordScoreFromEvent(gameId, score);
 };
 
@@ -50,7 +51,7 @@ export const subscribeToScoreSubmitted = async () => {
 
       console.log("[Stats Service] Received ScoreSubmitted Event:", payload);
 
-      await handleScoreSubmitted(payload);
+      await handleScoreSubmitted(payload.data);
 
       channel.ack(message);
     }
