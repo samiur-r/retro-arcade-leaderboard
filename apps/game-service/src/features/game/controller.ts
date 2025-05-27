@@ -11,8 +11,9 @@ export const getAllGamesHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const getGameBySlugHandler = async (req: Request, res: Response) => {
+export const getGameBySlugHandler = async (req: Request<{ slug: string }>, res: Response) => {
   const {slug} = req.params;
+
   try {
     const game = await gameService.getGameBySlug(slug);
     res.status(200).json({success: true, data: game});
@@ -22,8 +23,9 @@ export const getGameBySlugHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const createGameHandler = async (req: Request, res: Response) => {
+export const createGameHandler = async (req: Request<{ name: string, slug: string }>, res: Response) => {
   const {name, slug} = req.body;
+  
   try {
     const newGame = await gameService.addNewGame(name, slug);
     res.status(201).json({success: true, data: newGame});
@@ -33,8 +35,9 @@ export const createGameHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteGameHandler = async (req: Request, res: Response) => {
+export const deleteGameHandler = async (req: Request<{ id: string }>, res: Response) => {
   const {id} = req.params;
+
   try {
     const deletedGame = await gameService.removeGame(id);
     res.status(200).json({success: true, data: deletedGame});

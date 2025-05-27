@@ -1,7 +1,55 @@
-version: '3'
+version: "3.8"
+
 services:
   rabbitmq:
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
+    container_name: rabbitmq
+
+  game-service:
+    build:
+      context: .
+      dockerfile: apps/game-service/Dockerfile
+    container_name: game-service
+    ports:
+      - "5001:5001"
+    env_file:
+      - apps/game-service/.env
+
+  score-service:
+    build:
+      context: .
+      dockerfile: apps/score-service/Dockerfile
+    container_name: score-service
+    depends_on:
+      - rabbitmq
+    ports:
+      - "5002:5002"
+    env_file:
+      - apps/score-service/.env
+
+  stats-service:
+    build:
+      context: .
+      dockerfile: apps/stats-service/Dockerfile
+    container_name: stats-service
+    ports:
+      - "5003:5003"
+    env_file:
+      - apps/stats-service/.env
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: web
+    depends_on:
+      - game-service
+      - score-service
+      - stats-service
+    ports:
+      - "3000:3000"
+    env_file:
+      - apps/web/.env

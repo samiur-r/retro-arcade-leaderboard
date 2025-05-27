@@ -1,3 +1,3 @@
-import { nodeVitestConfig } from '@repo/vitest-config/base';
+import { webVitestConfig } from "@repo/vitest-config/base";
 
-export default nodeVitestConfig;
+export default webVitestConfig;

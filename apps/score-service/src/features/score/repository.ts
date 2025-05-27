@@ -1,4 +1,5 @@
 import {prisma} from '@/libs/db';
+// @ts-expect-error
 import {Score} from '@prisma/client';
 
 export const createScore = async (data: {

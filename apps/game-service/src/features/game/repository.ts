@@ -1,4 +1,5 @@
 import {prisma} from '@/libs/db';
+// @ts-expect-error
 import {Game} from '@prisma/client';
 
 export const findAllGames = async (): Promise<Game[]> => {

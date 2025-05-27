@@ -1,14 +1,12 @@
 import { notFound } from "next/navigation";
 import { getGameBySlug } from "../../../actions/game";
 
-type PlayPageProps = {
-  params: {
-    gameId: string;
-  };
-};
-
-export default async function PlayPage({ params }: PlayPageProps) {
-  const { gameId } = params;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ gameId: string }>;
+}) {
+  const { gameId } = await params;
 
   let game;
   try {

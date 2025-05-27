@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { getStatsByGameId } from "../../../actions/stat";
 
-type PageProps = {
-  params: { gameId: string };
-};
-
-export default async function LeaderboardPage({ params }: PageProps) {
-  const { gameId } = params;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ gameId: string }>
+}) {
+  const { gameId } = await params;
 
   let gameStats;
   try {

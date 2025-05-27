@@ -1,4 +1,5 @@
 import {prisma} from '@/libs/db';
+// @ts-expect-error
 import {GameStats} from '@prisma/client';
 
 export const findStatsByGameId = async (

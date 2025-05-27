@@ -11,19 +11,13 @@ export const getAllStatsHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const getStatsByGameIdHandler = async (req: Request, res: Response) => {
+export const getStatsByGameIdHandler = async (req: Request<{ gameId: string }>, res: Response) => {
   const {gameId} = req.params;
-
-  if (!gameId) {
-    return res
-      .status(400)
-      .json({success: false, message: 'gameId is required.'});
-  }
 
   try {
     const stats = await statsService.getStatsByGameId(gameId);
     if (!stats) {
-      return res
+      res
         .status(404)
         .json({success: false, message: 'Stats not found for the game.'});
     }

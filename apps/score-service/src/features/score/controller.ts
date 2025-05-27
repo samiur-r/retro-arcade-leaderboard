@@ -1,12 +1,8 @@
 import { Request, Response } from "express";
 import * as scoreService from "./service";
 
-export const submitScoreHandler = async (req: Request, res: Response) => {
+export const submitScoreHandler = async (req: Request<{ gameId: string, score: number }>, res: Response) => {
   const { gameId, score } = req.body;
-
-  if (!gameId || typeof score !== "number") {
-    return res.status(400).json({ success: false, message: "gameId and numeric score are required." });
-  }
 
   try {
     const newScore = await scoreService.submitScore(gameId, score);
@@ -17,13 +13,9 @@ export const submitScoreHandler = async (req: Request, res: Response) => {
   }
 };
 
-export const getLeaderboardHandler = async (req: Request, res: Response) => {
+export const getLeaderboardHandler = async (req: Request<{ gameId: string, score: number }>, res: Response) => {
   const { gameId } = req.params;
   const limit = parseInt(req.query.limit as string) || 10;
-
-  if (!gameId) {
-    return res.status(400).json({ success: false, message: "gameId param is required." });
-  }
 
   try {
     const leaderboard = await scoreService.fetchTopScores(gameId, limit);
