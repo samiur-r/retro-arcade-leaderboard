@@ -10,7 +10,7 @@ RUN pnpm install --frozen-lockfile
 
 RUN pnpm --filter score-service db:generate
 
-RUN pnpm --filter score-service build
+RUN pnpm --filter score-service... build
 
 WORKDIR /app/apps/score-service
 

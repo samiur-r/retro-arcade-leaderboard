@@ -9,7 +9,9 @@
     },
     "types": ["vitest/globals"],
     "composite": true,
-    "incremental": true
+    "incremental": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node"
   },
   "include": ["src"]
 }

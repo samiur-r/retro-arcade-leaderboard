@@ -10,7 +10,7 @@ RUN pnpm install --frozen-lockfile
 
 RUN pnpm --filter stats-service db:generate
 
-RUN pnpm --filter stats-service build
+RUN pnpm --filter stats-service... build
 
 WORKDIR /app/apps/stats-service
 

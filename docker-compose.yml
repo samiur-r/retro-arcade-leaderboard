@@ -16,7 +16,7 @@ services:
     ports:
       - "5001:5001"
     env_file:
-      - apps/game-service/.env
+      - apps/game-service/.env.docker
 
   score-service:
     build:
@@ -28,7 +28,7 @@ services:
     ports:
       - "5002:5002"
     env_file:
-      - apps/score-service/.env
+      - apps/score-service/.env.docker
 
   stats-service:
     build:
@@ -38,7 +38,7 @@ services:
     ports:
       - "5003:5003"
     env_file:
-      - apps/stats-service/.env
+      - apps/stats-service/.env.docker
 
   web:
     build:
@@ -52,4 +52,4 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - apps/web/.env
+      - apps/web/.env.docker

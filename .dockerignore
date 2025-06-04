@@ -1,13 +1,10 @@
 # Ignore node_modules from host (will be reinstalled in container)
 **/node_modules
-**/dist
-**/.turbo
-**/.next
 **/build
 
-# Ignore local env files and secrets
+<!-- # Ignore local env files and secrets
 **/.env
-.env
+.env -->
 
 # Ignore OS and IDE files
 .DS_Store

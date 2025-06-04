@@ -2,9 +2,12 @@
   "name": "@repo/messaging",
   "version": "0.0.0",
   "private": true,
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc"
   },
   "dependencies": {
     "amqplib": "^0.10.3"

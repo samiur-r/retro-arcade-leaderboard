@@ -2,12 +2,13 @@
   "name": "@repo/logger",
   "version": "0.0.0",
   "private": true,
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "exports": {
-    ".": "./src/index.ts"
-  },
+    ".": "./dist/index.js"
+  },  
   "scripts": {
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "build": "tsc"
   },
   "dependencies": {
     "winston": "^3.17.0"
