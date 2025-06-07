@@ -8,6 +8,39 @@ services:
       - "15672:15672"
     container_name: rabbitmq
 
+  game-db:
+    image: postgres:15
+    container_name: game-db
+    restart: always
+    ports:
+      - "5433:5432"
+    env_file:
+      - envs/game-db/.env
+    volumes:
+      - game_db_data:/var/lib/postgresql/data
+
+  score-db:
+    image: postgres:15
+    container_name: score-db
+    restart: always
+    ports:
+      - "5434:5432"
+    env_file:
+      - envs/score-db/.env
+    volumes:
+      - score_db_data:/var/lib/postgresql/data
+
+  stats-db:
+    image: postgres:15
+    container_name: stats-db
+    restart: always
+    ports:
+      - "5435:5432"
+    env_file:
+      - envs/stats-db/.env
+    volumes:
+      - stats_db_data:/var/lib/postgresql/data
+
   game-service:
     build:
       context: .
@@ -15,6 +48,8 @@ services:
     container_name: game-service
     ports:
       - "5001:5001"
+    depends_on:
+      - game-db
     env_file:
       - apps/game-service/.env.docker
 
@@ -25,6 +60,7 @@ services:
     container_name: score-service
     depends_on:
       - rabbitmq
+      - score-db
     ports:
       - "5002:5002"
     env_file:
@@ -37,6 +73,8 @@ services:
     container_name: stats-service
     ports:
       - "5003:5003"
+    depends_on:
+      - stats-db
     env_file:
       - apps/stats-service/.env.docker
 
@@ -53,3 +91,8 @@ services:
       - "3000:3000"
     env_file:
       - apps/web/.env.docker
+
+volumes:
+  game_db_data:
+  score_db_data:
+  stats_db_data:
