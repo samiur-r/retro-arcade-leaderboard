@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -42,9 +40,7 @@ services:
       - stats_db_data:/var/lib/postgresql/data
 
   game-service:
-    build:
-      context: .
-      dockerfile: apps/game-service/Dockerfile
+    image: 343727212627.dkr.ecr.eu-north-1.amazonaws.com/game-service:latest
     container_name: game-service
     ports:
       - "5001:5001"
@@ -54,9 +50,7 @@ services:
       - apps/game-service/.env.docker
 
   score-service:
-    build:
-      context: .
-      dockerfile: apps/score-service/Dockerfile
+    image: 343727212627.dkr.ecr.eu-north-1.amazonaws.com/score-service:latest
     container_name: score-service
     depends_on:
       - rabbitmq
@@ -67,9 +61,7 @@ services:
       - apps/score-service/.env.docker
 
   stats-service:
-    build:
-      context: .
-      dockerfile: apps/stats-service/Dockerfile
+    image: 343727212627.dkr.ecr.eu-north-1.amazonaws.com/stats-service:latest
     container_name: stats-service
     ports:
       - "5003:5003"
@@ -79,9 +71,7 @@ services:
       - apps/stats-service/.env.docker
 
   web:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
+    image: 343727212627.dkr.ecr.eu-north-1.amazonaws.com/web:latest
     container_name: web
     depends_on:
       - game-service
