@@ -53,10 +53,11 @@ jobs:
 
       - name: Deploy via SSH
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd ~/retro-arcade-leaderboard
-            git pull origin main
-            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
-            docker-compose pull
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+            cd ~/retro-arcade-leaderboard &&
+            git pull origin main &&
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} |
+              docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }} &&
+            docker-compose pull &&
             docker-compose up -d
-          EOF
+          "
