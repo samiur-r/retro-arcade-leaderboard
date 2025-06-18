@@ -29,4 +29,4 @@ WORKDIR /app/apps/game-service
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
-CMD ["pnpm", "start"]
+# CMD ["pnpm", "start"]
