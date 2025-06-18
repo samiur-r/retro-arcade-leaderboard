@@ -62,7 +62,7 @@ jobs:
             cd ~/retro-arcade-leaderboard &&
             git pull origin main &&
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} |
-              sudo docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }} &&
-              sudo docker-compose pull &&
-            sudo docker-compose up -d
+              docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }} &&
+            docker-compose pull &&
+            docker-compose up -d
           "
