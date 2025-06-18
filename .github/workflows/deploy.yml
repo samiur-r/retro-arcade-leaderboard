@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  REGION: ${{ secrets.AWS_REGION }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
 
 jobs:
