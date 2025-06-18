@@ -24,12 +24,12 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         run: |
-          aws ecr get-login-password --region $REGION \
-            | docker login --username AWS --password-stdin $ECR_REGISTRY
+          aws ecr get-login-password --region $AWS_REGION \
+            | docker login --username $EC2_USER --password-stdin $ECR_REGISTRY
 
       - name: Build and Push Docker Images
         run: |
@@ -56,7 +56,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             cd ~/retro-arcade-leaderboard
             git pull origin main
-            aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+            aws ecr get-login-password --region $AWS_REGION | docker login --username $EC2_USER --password-stdin $ECR_REGISTRY
             docker-compose pull
             docker-compose up -d
           EOF
