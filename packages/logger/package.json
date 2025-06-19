@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "exports": {
     ".": "./dist/index.js"
-  },  
+  },
   "scripts": {
     "check-types": "tsc --noEmit",
     "build": "tsc"

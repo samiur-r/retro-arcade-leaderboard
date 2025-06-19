@@ -21,7 +21,7 @@ export default async function Page({
   }
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="min-h-screen px-4 py-12 bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
       <h1 className="text-3xl font-bold text-center mb-8">🎮 {game.name}</h1>
 
       <div className="flex items-center justify-center">
